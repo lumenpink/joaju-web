@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Metadados Primários -->
+    <title>Joaju — Compilador de Diagramas Acadêmicos & Gráficos Científicos</title>
+    <meta name="description" content="Compilador declarativo para diagramas acadêmicos e gráficos científicos com Typst, normas ABNT NBR 14724, orquestração multi-engine Kroki e heredogramas.">
+    <link rel="canonical" href="https://joaju.2lp.in/">
+
+    <!-- Metadados Sociais Open Graph / KokoroSim Anti-Truncamento (50-70 chars título, 120-160 chars descrição) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joaju.2lp.in/">
+    <meta property="og:title" content="Joaju — Academic Diagram Compiler & Scientific Graphics Pipeline">
+    <meta property="og:description" content="Declarative compiler for academic diagrams and scientific graphics with Typst, ABNT NBR 14724 templates, Kroki multi-engine, and clinical pedigrees.">
+    <meta property="og:image" content="https://joaju.2lp.in/assets/og_preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="pt_BR">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://joaju.2lp.in/">
+    <meta name="twitter:title" content="Joaju — Academic Diagram Compiler & Scientific Graphics Pipeline">
+    <meta name="twitter:description" content="Declarative compiler for academic diagrams and scientific graphics with Typst, ABNT NBR 14724 templates, Kroki multi-engine, and clinical pedigrees.">
+    <meta name="twitter:image" content="https://joaju.2lp.in/assets/og_preview.png">
+
+    <link rel="stylesheet" href="style.css">
+
+  <style>
+    .site-footer {
+      border-top: 1px solid var(--border, #333);
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .footer-canonical {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-line-identity {
+      font-weight: 500;
+    }
+    .footer-line-metadata {
+      color: var(--text-muted, #888);
+      font-size: 0.8rem;
+    }
+    .site-footer a {
+      color: var(--accent, #ff79c6);
+      text-decoration: none;
+    }
+    .site-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand">
+                <span class="logo-icon">📐</span>
+                <span class="brand-name">Joaju</span>
+                <span class="badge">v0.1.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Recursos</a>
+                <a href="#motores">Motores & Módulos</a>
+                <a href="#perfis">Perfis</a>
+                <a href="#quickstart">Guia Rápido</a>
+                <a href="#api">API Local</a>
+                <a href="https://codeberg.org/lumenpink/joaju" target="_blank" rel="noopener" class="nav-github">Codeberg ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="hero">
+            <div class="hero-badge">NORMAS GOST v1.0.0-draft // OPEN SOURCE</div>
+            <h1 class="hero-title">Orquestrador Declarativo de Diagramas & Gráficos Científicos</h1>
+            <p class="hero-subtitle">
+                Transforme Markdown declarativo em PDFs acadêmicos e gráficos vetoriais estritamente formatados conforme a ABNT NBR 14724, com suporte a diagramas multi-engine (Kroki, Mermaid) e extensão para heredogramas clínicos.
+            </p>
+            <div class="hero-actions">
+                <a href="#motores" class="btn-primary">Explorar Motores & Configurações</a>
+                <a href="#quickstart" class="btn-secondary">Guia Rápido</a>
+            </div>
+        </section>
+
+        <section id="features" class="grid-features">
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Diagramas Declarativos (Kroki)</h3>
+                <p>Suporte transparente a blocos Mermaid, PlantUML, Graphviz e Vega-Lite através da integração isolada com o gateway Kroki.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Tipografia Vetorial com Typst</h3>
+                <p>Diagramação de alta velocidade com três perfis bibliográficos CSL integrados: <code>trabalho-ufsc</code> (capa institucional padronizada), <code>abnt</code> (NBR 14724) e <code>vancouver</code> (biomédico).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Hermeticidade e Padrão GOST</h3>
+                <p>Ambiente conteinerizado multi-stage OCI rodando com usuário não privilegiado e suíte de testes com cobertura superior a 90%.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧬</div>
+                <h3>Extensão: Heredogramas Clínicos</h3>
+                <p>Módulo especializado para geração de heredogramas no padrão NSGC via motor R (pedtools e kinship2) para publicações biomédicas e genéticas.</p>
+            </div>
+        </section>
+
+        <section id="motores" class="section">
+            <h2>🧩 Motores e Módulos Disponíveis</h2>
+            <p>Selecione um motor para ver a documentação exaustiva de parâmetros, opções repassadas aos motores nativos e múltiplos exemplos práticos prontos para uso:</p>
+
+            <div class="grid-features">
+                <a href="motores/pedtools.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #10b981;">
+                    <div class="card-icon">🧬</div>
+                    <h3>pedtools <span class="badge" style="background:#10b981; color:#fff;">Principal</span></h3>
+                    <p>Heredogramas clínicos modernos (pedsuite R) com auto-dimensionamento vertical proporcional às gerações, half-fill e legendas.</p>
+                </a>
+
+                <a href="motores/kinship2.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #f59e0b;">
+                    <div class="card-icon">🕰️</div>
+                    <h3>kinship2 <span class="badge" style="background:#f59e0b; color:#fff;">Legado</span></h3>
+                    <p>Motor legado de heredogramas clínicos baseado em kinship2 para compatibilidade retroativa com notas existentes.</p>
+                </a>
+
+                <a href="motores/table.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #3b82f6;">
+                    <div class="card-icon">📋</div>
+                    <h3>table</h3>
+                    <p>Tabelas com tipografia acadêmica estrita (padrão APA/ABNT com 3 réguas horizontais, alinhamento numérico e notas de rodapé).</p>
+                </a>
+
+                <a href="motores/quimica.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #8b5cf6;">
+                    <div class="card-icon">⚗️</div>
+                    <h3>openchemlib & openbabel</h3>
+                    <p>Renderização vetorial SVG de estruturas químicas 2D a partir de notação SMILES e arquivos MOL/SDF.</p>
+                </a>
+
+                <a href="motores/mermaid.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #ec4899;">
+                    <div class="card-icon">📊</div>
+                    <h3>mermaid</h3>
+                    <p>Fluxogramas, sequências, classes, estados, gitgraph e gráficos de Gantt renderizados via Kroki em alta resolução.</p>
+                </a>
+
+                <a href="motores/d2.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #06b6d4;">
+                    <div class="card-icon">📐</div>
+                    <h3>d2</h3>
+                    <p>Linguagem moderna de diagramação declarativa para arquitetura de sistemas, topologias de rede e fluxos de dados.</p>
+                </a>
+
+                <a href="motores/plantuml.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #f97316;">
+                    <div class="card-icon">☕</div>
+                    <h3>plantuml</h3>
+                    <p>Diagramas UML clássicos e de engenharia de software (casos de uso, componentes, sequência e pacotes).</p>
+                </a>
+
+                <a href="motores/graphviz.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #64748b;">
+                    <div class="card-icon">🕸️</div>
+                    <h3>graphviz</h3>
+                    <p>Grafos direcionados e não-direcionados, autômatos finitos e redes de relacionamentos em linguagem DOT.</p>
+                </a>
+
+                <a href="motores/gist.html" class="card" style="text-decoration: none; color: inherit; display: block; border-left: 4px solid #a855f7;">
+                    <div class="card-icon">📜</div>
+                    <h3>gist</h3>
+                    <p>Inclusão resiliente de scripts analíticos (R, Python, Julia, SQL) hospedados no repositório externo (Gist) com cache em memória.</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="quickstart" class="section">
+            <h2>🚀 Inicialização Rápida no Ambiente Local</h2>
+            <p>O Joaju provê interfaces prontas para o fluxo de trabalho integrado com o <code>cccp</code>:</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Terminal (Bash)</span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+                </div>
+                <pre><code># 1. Iniciar servidor com recarga contínua (hot watcher):
+cccp serve --dev
+# ou: npm run dev
+
+# 2. Executar demonstração com dados semeados (Exposição VDNKh):
+cccp serve --demo
+# ou: npm run demo
+
+# 3. Executar suíte completa de testes unitários e de cobertura:
+npm test
+npm run test:coverage</code></pre>
+            </div>
+        </section>
+
+        <section id="perfis" class="section">
+            <h2>📚 Perfis Tipográficos Suportados (YAML Frontmatter)</h2>
+            <p>Configure o comportamento visual e o padrão bibliográfico no cabeçalho da sua nota no Obsidian:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Markdown (Cabeçalho YAML)</span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+                </div>
+                <pre><code>---
+titulo: Elaboração de Heredograma Familiar e Análise Genético-Clínica
+subtitulo: Estudo de Caso Ambulatorial e Herança Autossômica Recessiva
+autor: Equipe de Genética Médica
+instituicao: Universidade Federal de Santa Catarina
+local: Florianópolis
+ano: 2026
+perfil: trabalho-ufsc # Opções: 'trabalho-ufsc', 'abnt' ou 'vancouver'
+---</code></pre>
+            </div>
+
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Perfil (<code>perfil:</code>)</th>
+                        <th>Finalidade e Regras Tipográficas</th>
+                        <th>Estilo de Citação / CSL</th>
+                        <th>Variáveis Suportadas no YAML</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>trabalho-ufsc</code></td>
+                        <td>Trabalhos acadêmicos e monografias da UFSC. Gera capa institucional padronizada, folha de rosto, margens oficiais (3cm/2cm) e paginação no canto superior direito a partir da folha 2.</td>
+                        <td><code>trabalho-ufsc.csl</code> (ABNT/UFSC)</td>
+                        <td><code>titulo</code>, <code>subtitulo</code>, <code>autor</code>, <code>instituicao</code>, <code>local</code>, <code>ano</code>, <code>fonte</code>, <code>tamanho</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>abnt</code></td>
+                        <td>Artigos científicos gerais e relatórios técnicos. Segue rigorosamente a ABNT NBR 14724 com espaçamento 1.5, numeração progressiva de seções (NBR 6024) e referências alfabéticas autor-data.</td>
+                        <td><code>abnt.csl</code> (NBR 6023)</td>
+                        <td><code>titulo</code>, <code>subtitulo</code>, <code>autor</code>, <code>fonte</code>, <code>tamanho</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>vancouver</code></td>
+                        <td>Artigos e comunicações nas áreas médica, biológica e da saúde. Citações numéricas sequenciais entre parênteses no texto e referências ordenadas por ordem de aparição conforme padrão ICMJE/NLM.</td>
+                        <td><code>vancouver.csl</code> (ICMJE)</td>
+                        <td><code>titulo</code>, <code>subtitulo</code>, <code>autor</code>, <code>fonte</code>, <code>tamanho</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="diagrams" class="section">
+            <h2>📊 Sintaxe de Diagramas e Gráficos</h2>
+            <p>Escreva fluxogramas, grafos, sequências e arquiteturas diretamente em blocos de código declarativos com controle fino de escala:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Markdown (Diagrama Mermaid)</span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+                </div>
+                <pre><code>```mermaid
+%% width=85% max-width=600pt
+graph TD
+    A[Coleta de Dados / Amostragem] --> B[Processamento & Limpeza]
+    B --> C{Validação dos Dados}
+    C -->|Válido| D[Análise Estatística & Modelagem]
+    C -->|Inconsistente| E[Filtragem de Ruído / Descarte]
+    D --> F[Visualização & Relatório Final]
+```</code></pre>
+            </div>
+        </section>
+
+        <section id="pedigrees" class="section">
+            <h2>🧬 Módulo Especializado: Heredogramas Clínicos</h2>
+            <p>Escreva dados genealógicos tabulares simples diretamente em blocos de código com diretivas visuais:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Markdown (Heredograma Clínico)</span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+                </div>
+                <pre><code>```heredograma
+%% layout.width=90% layout.max_width=550pt cex=0.85
+id,pai,mae,sex,fenotipo,label
+1,0,0,M,wt,I.1 (Avô)
+2,0,0,F,wt,I.2 (Avó)
+3,1,2,M,het,II.1 (Pai Portador)
+4,0,0,F,wt,II.2 (Mãe Não-Afetada)
+5,3,4,F,hom,III.1 (Probanda Afetada)
+6,3,4,M,wt,III.2 (Irmão Hígido)
+```</code></pre>
+            </div>
+        </section>
+
+        <section id="api" class="section">
+            <h2>📡 Referência da API Local</h2>
+            <div class="api-card">
+                <span class="badge-method get">GET</span>
+                <span class="api-endpoint">/health</span>
+                <p>Sonda de integridade operacional retornando <code>status: "ok"</code>, versão atual e tempo de atividade.</p>
+            </div>
+            <div class="api-card">
+                <span class="badge-method post">POST</span>
+                <span class="api-endpoint">/render</span>
+                <p>Renderização rápida de fragmentos declarativos (diagramas Mermaid ou heredogramas) devolvendo SVG vetorial para visualização interativa instantânea.</p>
+            </div>
+            <div class="api-card">
+                <span class="badge-method post">POST</span>
+                <span class="api-endpoint">/compile</span>
+                <p>Pipeline completo de compilação: pré-processa diagramas, executa filtros Pandoc e compila o documento ABNT final em PDF vetorial de alta resolução.</p>
+            </div>
+        </section>
+    </main>
+
+        <footer class="site-footer">
+    <div class="footer-canonical">
+      <div class="footer-line footer-line-identity">
+        Orgulhosamente produzido por uma <a href="https://travesti.2lp.in/pt/" target="_blank" rel="noopener">travesti latina</a> 🏳️‍⚧️ :)
+      </div>
+      <div class="footer-line footer-line-metadata">
+        joaju v0.1.0 • por <a href="https://lumen.pink" target="_blank" rel="noopener">Lumen Pink</a> • Brasil 🇧🇷 • <a href="LICENSE" target="_blank" rel="noopener">Apache-2.0</a>
+      </div>
+    </div>
+  </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

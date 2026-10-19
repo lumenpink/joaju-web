@@ -1,0 +1,43 @@
+services:
+  # 1. Joaju Web HTTP service (Pure Rust Axum daemon + static assets)
+  joaju:
+    build:
+      context: ..
+      dockerfile: joaju-web/Dockerfile
+    container_name: joaju
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - ./data:/data
+    networks:
+      - joaju_net
+    depends_on:
+      - kroki
+
+  # 2. Kroki Gateway
+  kroki:
+    image: yuzutech/kroki:0.32.1
+    container_name: kroki_gateway
+    restart: unless-stopped
+    environment:
+      - KROKI_MERMAID_HOST=kroki-mermaid
+      - KROKI_MERMAID_PORT=8002
+    networks:
+      - joaju_net
+    depends_on:
+      - kroki-mermaid
+
+  # 3. Mermaid renderer (Chromium headless)
+  kroki-mermaid:
+    image: yuzutech/kroki-mermaid:0.32.1
+    container_name: kroki_mermaid
+    restart: unless-stopped
+    networks:
+      - joaju_net
+
+networks:
+  joaju_net:
+    driver: bridge
