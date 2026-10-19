@@ -1,7 +1,7 @@
 # ==============================================================================
 # Stage 1: Build native Rust binary
 # ==============================================================================
-FROM rust:1.85-bookworm AS builder
+FROM rust:latest AS builder
 
 WORKDIR /build
 
@@ -28,6 +28,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     fonts-liberation \
+    libssl3 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -u 1000 -s /bin/bash joaju
