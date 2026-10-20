@@ -31,7 +31,8 @@ async fn test_spec_health_endpoint() {
 
     assert_eq!(json["status"], "ok");
     assert_eq!(json["name"], "joaju");
-    assert!(json["version"].is_string());
+    let expected_version = include_str!("../VERSION").trim();
+    assert_eq!(json["version"], expected_version);
     assert!(json["uptime"].is_number());
 }
 
