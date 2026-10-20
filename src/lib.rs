@@ -175,7 +175,7 @@ pub async fn preprocess_handler(
 pub fn create_app() -> Router {
     let state = Arc::new(AppState {
         start_time: Instant::now(),
-        version: env!("CARGO_PKG_VERSION"),
+        version: include_str!("../VERSION").trim(),
     });
 
     let cors = CorsLayer::new()
