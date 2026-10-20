@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Recepção de eventos `workflow_dispatch` para atualização em cascata GitOps e deploy contínuo (closes #6).
 - Pipeline de Continuous Deployment soberano (Zero Watchtower) no nó central `obizero` com healthcheck de 15s e rollback automático (closes #5).
 - Auditoria de conformidade para isolamento de build hermético e registry soberano (closes #5).
 
