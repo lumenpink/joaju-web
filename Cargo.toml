@@ -21,7 +21,7 @@ name = "joaju-web"
 path = "src/main.rs"
 
 [dependencies]
-joaju = { version = "0.1.0", path = "../joaju" }
+joaju = { version = "0.1.0", registry = "lumen" }
 axum = "0.8"
 tokio = { version = "1", features = ["full"] }
 tower-http = { version = "0.6", features = ["cors", "fs", "trace"] }

@@ -3,17 +3,16 @@
 # ==============================================================================
 FROM rust:latest AS builder
 
-WORKDIR /build
+WORKDIR /app
 
-# Copy dependency crates
-COPY joaju-csv ./joaju-csv
-COPY joaju-table ./joaju-table
-COPY joaju-unfurl ./joaju-unfurl
-COPY joaju-pedigree ./joaju-pedigree
-COPY joaju ./joaju
-COPY joaju-web ./joaju-web
+# Configure sovereign lumen Cargo registry (sparse index over HTTPS, zero auth needed for download)
+RUN mkdir -p /usr/local/cargo && \
+    cat <<'EOF' > /usr/local/cargo/config.toml
+[registries.lumen]
+index = "sparse+https://git.2lp.in/api/packages/lumen/cargo/"
+EOF
 
-WORKDIR /build/joaju-web
+COPY . .
 
 RUN cargo build --release
 
@@ -39,10 +38,10 @@ RUN mkdir -p /data /tmp /app \
     && chown -R joaju:joaju /app /data /tmp \
     && chmod 1777 /tmp
 
-COPY --chown=joaju:joaju --from=builder /build/joaju-web/target/release/joaju-web /usr/local/bin/joaju-web
-COPY --chown=joaju:joaju joaju-web/public /app/public
-COPY --chown=joaju:joaju joaju-web/locales /app/locales
-COPY --chown=joaju:joaju joaju-web/site /app/site
+COPY --chown=joaju:joaju --from=builder /app/target/release/joaju-web /usr/local/bin/joaju-web
+COPY --chown=joaju:joaju public /app/public
+COPY --chown=joaju:joaju locales /app/locales
+COPY --chown=joaju:joaju site /app/site
 
 USER joaju
 

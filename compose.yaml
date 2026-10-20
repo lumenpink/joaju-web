@@ -1,9 +1,10 @@
 services:
   # 1. Joaju Web HTTP service (Pure Rust Axum daemon + static assets)
   joaju:
+    image: lumenpink/joaju-web:latest
     build:
-      context: ..
-      dockerfile: joaju-web/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: joaju
     restart: unless-stopped
     ports:
