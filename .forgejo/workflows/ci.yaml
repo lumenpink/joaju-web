@@ -6,6 +6,7 @@ on:
     tags: ["v*"]
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -39,6 +40,23 @@ jobs:
 index = "sparse+https://git.2lp.in/api/packages/lumen/cargo/"
 EOF
 
+      - name: "GitOps — Update Sovereign Joaju Dependency"
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "-> GitOps dispatch recebido: atualizando joaju a partir do registry lumen..."
+          cargo update -p joaju
+          if ! git diff --quiet Cargo.lock; then
+            echo "-> Alteracoes detectadas em Cargo.lock. Commitando..."
+            git config user.name "Lumen Pink (Baquara)"
+            git config user.email "hi@lumen.pink"
+            git commit -m "chore(deps): atualizar joaju para versao mais recente [skip ci]"
+            if [ -n "${{ secrets.CODEBERG_TOKEN }}" ]; then
+              git push "https://x-access-token:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/lumenpink/joaju-web.git" main || true
+            fi
+          else
+            echo "-> Nenhuma alteracao em Cargo.lock detectada."
+          fi
+
       - name: "Format Check"
         run: cargo fmt -- --check
 
@@ -51,6 +69,9 @@ EOF
       - name: "Audit Sovereign CD Workflow & Registry"
         run: bash tests/audit_registry_and_cd.sh
 
+      - name: "Audit GitOps Cascade Integration"
+        run: bash tests/audit_gitops_dispatch.sh
+
       - name: "CCCP Quality Audit"
         run: |
           if command -v cccp >/dev/null 2>&1; then
@@ -61,7 +82,7 @@ EOF
     name: "Container — Build & Sovereign CD (obizero)"
     runs-on: ubuntu-latest
     needs: [check-and-test]
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -83,6 +104,7 @@ EOF
       - name: "Push Image to Docker Hub (Registry Backup)"
         if: env.DOCKER_PASSWORD != ''
         env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker push lumenpink/joaju-web:latest
