@@ -66,11 +66,11 @@ pub async fn render_handler(
         } else {
             clean
         };
-        return match joaju::preprocessor::render_single_table(body) {
-            Ok(typst) => Ok(Json(joaju::RenderResponse {
+        return match joaju::preprocessor::render_html_table(body) {
+            Ok(html) => Ok(Json(joaju::RenderResponse {
                 format: "table".to_string(),
-                r#type: "typst".to_string(),
-                svg: typst,
+                r#type: "html".to_string(),
+                svg: html,
             })),
             Err(err) => Err((
                 StatusCode::BAD_REQUEST,

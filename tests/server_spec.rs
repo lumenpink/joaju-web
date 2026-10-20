@@ -257,3 +257,35 @@ async fn test_spec_unfurl_invalid_url() {
 
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
 }
+
+#[tokio::test]
+async fn test_spec_render_table_endpoint() {
+    let app = create_app();
+
+    let payload = serde_json::json!({
+        "format": "table",
+        "code": "A | B\n1 | 2"
+    });
+
+    let response = app
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri("/render")
+                .header("Content-Type", "application/json")
+                .body(Body::from(payload.to_string()))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+    let bytes = response.into_body().collect().await.unwrap().to_bytes();
+    let json: Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(json["format"], "table");
+    assert_eq!(json["type"], "html");
+    assert!(json["svg"]
+        .as_str()
+        .unwrap()
+        .contains("joaju-academic-table"));
+}
