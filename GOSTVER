@@ -1,4 +1,3 @@
-# GOSTVER — Declaração de Conformidade com o Padrão GOST
-GOST_VERSION="1.1.0"
+GOST_VERSION="1.5.0"
 GOST_PROFILE_URL="lumen"
 GOST_LANGUAGES="rust"
