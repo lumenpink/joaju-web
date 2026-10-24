@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Remoção de campo `permissions:` incompatível com Forgejo Actions (closes #8).
+
 ### Fixed
 - Reportar versão canônica SemVer do arquivo VERSION no endpoint /health (closes #7).
 
