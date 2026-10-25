@@ -16,6 +16,8 @@ jobs:
   check-and-test:
     name: "Rust — Checks & Unit Tests"
     runs-on: ubuntu-latest
+    container:
+      image: gambi.2lp.in/lumen/gost-ci-cross:latest
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -34,7 +36,7 @@ jobs:
           mkdir -p "$HOME/.cargo"
           cat <<'EOF' > "$HOME/.cargo/config.toml"
 [registries.lumen]
-index = "sparse+https://git.2lp.in/api/packages/lumen/cargo/"
+index = "sparse+https://gambi.2lp.in/api/packages/lumen/cargo/"
 EOF
 
       - name: "GitOps — Update Sovereign Joaju Dependency"
@@ -78,6 +80,8 @@ EOF
   build-and-deploy-docker:
     name: "Container — Build & Sovereign CD (obizero)"
     runs-on: ubuntu-latest
+    container:
+      image: gambi.2lp.in/lumen/gost-ci-cross:latest
     needs: [check-and-test]
     if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     steps:

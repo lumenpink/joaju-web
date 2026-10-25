@@ -9,7 +9,7 @@ WORKDIR /app
 RUN mkdir -p /usr/local/cargo && \
     cat <<'EOF' > /usr/local/cargo/config.toml
 [registries.lumen]
-index = "sparse+https://git.2lp.in/api/packages/lumen/cargo/"
+index = "sparse+https://gambi.2lp.in/api/packages/lumen/cargo/"
 EOF
 
 COPY . .

@@ -43,7 +43,7 @@ if grep -q 'COPY joaju' Dockerfile; then
   echo "✘ [FALHA] Dockerfile ainda contém cópias manuais de crates irmãs no host!"
   exit 1
 fi
-if ! grep -q 'sparse+https://git.2lp.in/api/packages/lumen/cargo/' Dockerfile; then
+if ! grep -q -E "sparse\+https://(gambi|git)\.2lp\.in/api/packages/lumen/cargo/" Dockerfile; then
   echo "✘ [FALHA] Dockerfile não configura o endpoint do registry soberano lumen!"
   exit 1
 fi
