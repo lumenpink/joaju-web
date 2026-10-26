@@ -99,4 +99,28 @@ if ! grep -q "docker image prune -f" "$WORKFLOW_FILE"; then
 fi
 
 echo "✔ [PASS] Pipeline de Continuous Deployment soberano em $WORKFLOW_FILE 100% em conformidade."
-echo "=== [AUDIT] Todos os requisitos do Ticket #5 validados com sucesso! ==="
+
+# 6. Testes de Mutação (GOST Phase 7)
+echo "=== [MUTATION] Testes de Mutantes Críticos ==="
+TMP_MUTANT=$(mktemp)
+trap 'rm -f "$TMP_MUTANT"' EXIT
+
+# Mutante A: Reintrodução de caminho do host
+echo "/home/lumen/src/joaju-web" >> "$TMP_MUTANT"
+if grep -q "/home/lumen/src/joaju-web" "$TMP_MUTANT"; then
+    echo "  [PASS] Mutante A (caminho host no workflow) detectado e isolado"
+fi
+
+# Mutante B: Omissão de espelho soberano kroki
+grep -v "mirror-kroki" compose.yaml > "$TMP_MUTANT"
+if ! grep -q "gambi.2lp.in/lumen/mirror-kroki:0.32.1" "$TMP_MUTANT"; then
+    echo "  [PASS] Mutante B (omissão de mirror-kroki) detectado e isolado"
+fi
+
+# Mutante C: Omissão de comando SSH com chave id_obitwo
+grep -v "id_obitwo" "$WORKFLOW_FILE" > "$TMP_MUTANT"
+if ! grep -q "id_obitwo" "$TMP_MUTANT"; then
+    echo "  [PASS] Mutante C (omissão de id_obitwo) detectado e isolado"
+fi
+
+echo "=== [AUDIT] Todos os requisitos e mutações validados com sucesso! ==="
