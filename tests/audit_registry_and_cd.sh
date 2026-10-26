@@ -23,7 +23,7 @@ if ! grep -q 'registry = "lumen"' Cargo.toml; then
 fi
 echo "✔ [PASS] Cargo.toml configurado para registry soberano lumen."
 
-# 3. Verificar hermeticidade do compose.yaml
+# 3. Verificar hermeticidade do compose.yaml e espelhos soberanos Kroki
 if grep -q 'context: \.\.' compose.yaml; then
   echo "✘ [FALHA] compose.yaml ainda aponta o contexto de build para o diretório pai (..)"
   exit 1
@@ -36,7 +36,15 @@ if ! grep -q 'image: lumenpink/joaju-web:latest' compose.yaml; then
   echo "✘ [FALHA] compose.yaml não define a imagem canônica 'lumenpink/joaju-web:latest'!"
   exit 1
 fi
-echo "✔ [PASS] compose.yaml com contexto hermético e imagem canônica."
+if ! grep -q 'image: gambi.2lp.in/lumen/mirror-kroki:0.32.1' compose.yaml; then
+  echo "✘ [FALHA] compose.yaml não utiliza o espelho soberano mirror-kroki no gambi.2lp.in!"
+  exit 1
+fi
+if ! grep -q 'image: gambi.2lp.in/lumen/mirror-kroki-mermaid:0.32.1' compose.yaml; then
+  echo "✘ [FALHA] compose.yaml não utiliza o espelho soberano mirror-kroki-mermaid no gambi.2lp.in!"
+  exit 1
+fi
+echo "✔ [PASS] compose.yaml com contexto hermético, imagem canônica e espelhos soberanos."
 
 # 4. Verificar ausência de cópias locais fraturadas no Dockerfile
 if grep -q 'COPY joaju' Dockerfile; then
@@ -65,8 +73,13 @@ if grep -i "watchtower" "$WORKFLOW_FILE"; then
   exit 1
 fi
 
-if ! grep -q "docker compose -f /home/lumen/src/joaju-web/compose.yaml up -d --no-build joaju" "$WORKFLOW_FILE"; then
-  echo "✘ [FALHA] $WORKFLOW_FILE não executa deploy direto do container joaju no compose.yaml!"
+if grep -q "/home/lumen/src/joaju-web" "$WORKFLOW_FILE"; then
+  echo "✘ [FALHA] $WORKFLOW_FILE ainda contém caminhos absolutos para o repositório de desenvolvimento no host!"
+  exit 1
+fi
+
+if ! grep -q "ssh .*cd ~/stacks/joaju && docker compose -f compose.yaml up -d --no-build joaju" "$WORKFLOW_FILE"; then
+  echo "✘ [FALHA] $WORKFLOW_FILE não executa deploy seguro via SSH na stack ~/stacks/joaju/compose.yaml!"
   exit 1
 fi
 
