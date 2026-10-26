@@ -78,8 +78,13 @@ if grep -q "/home/lumen/src/joaju-web" "$WORKFLOW_FILE"; then
   exit 1
 fi
 
-if ! grep -q "ssh .*cd ~/stacks/joaju && docker compose -f compose.yaml up -d --no-build joaju" "$WORKFLOW_FILE"; then
-  echo "✘ [FALHA] $WORKFLOW_FILE não executa deploy seguro via SSH na stack ~/stacks/joaju/compose.yaml!"
+if ! grep -q "cd ~/stacks/joaju && docker compose -f compose.yaml up -d --no-build joaju" "$WORKFLOW_FILE"; then
+  echo "✘ [FALHA] $WORKFLOW_FILE não executa deploy seguro na stack ~/stacks/joaju/compose.yaml!"
+  exit 1
+fi
+
+if ! grep -q "ssh .*id_obitwo" "$WORKFLOW_FILE"; then
+  echo "✘ [FALHA] $WORKFLOW_FILE não executa conexão SSH com id_obitwo!"
   exit 1
 fi
 

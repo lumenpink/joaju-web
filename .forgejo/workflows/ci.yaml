@@ -110,17 +110,24 @@ jobs:
         run: |
           docker push lumenpink/joaju-web:latest
 
-      - name: "Deploy Locally on obizero (Direct Socket)"
+      - name: "Deploy to Sovereign Node (obizero)"
+        env:
+          SSH_HOST: ${{ vars.DEPLOY_HOST_OBIZERO || '172.17.0.1' }}
+          SSH_USER: ${{ vars.DEPLOY_USER_OBIZERO || 'lumen' }}
         run: |
-          echo "-> Aplicando atualização local no runtime Docker do obizero..."
-          docker compose -f /home/lumen/src/joaju-web/compose.yaml up -d --no-build joaju
+          echo "-> Executando Continuous Deployment seguro via SSH em $SSH_HOST..."
+          ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_obitwo "$SSH_USER@$SSH_HOST" \
+            "cd ~/stacks/joaju && docker compose -f compose.yaml up -d --no-build joaju"
 
       - name: "Active Healthcheck & Rollback Protocol"
+        env:
+          SSH_HOST: ${{ vars.DEPLOY_HOST_OBIZERO || '172.17.0.1' }}
+          SSH_USER: ${{ vars.DEPLOY_USER_OBIZERO || 'lumen' }}
         run: |
-          echo "-> Sondando estabilidade do container joaju (polling 15s)..."
+          echo "-> Sondando estabilidade do container joaju via SSH (polling 15s)..."
           SUCCESS=0
           for i in $(seq 1 15); do
-            STATUS=$(docker inspect --format='{{.State.Status}}' joaju 2>/dev/null || echo "unknown")
+            STATUS=$(ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_obitwo "$SSH_USER@$SSH_HOST" "docker inspect --format='{{.State.Status}}' joaju 2>/dev/null || echo 'unknown'")
             if [ "$STATUS" = "running" ]; then
               echo "  [PASS] Container joaju saudável e ativo (tentativa $i/15)."
               SUCCESS=1
@@ -132,13 +139,16 @@ jobs:
           if [ $SUCCESS -ne 1 ]; then
             echo "✘ [FALHA] Container não estabilizou no prazo limite! Acionando Rollback..."
             if [ -n "$OLD_IMAGE_ID" ]; then
-              docker tag "$OLD_IMAGE_ID" lumenpink/joaju-web:latest
-              docker compose -f /home/lumen/src/joaju-web/compose.yaml up -d --no-build joaju
+              ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_obitwo "$SSH_USER@$SSH_HOST" \
+                "docker tag '$OLD_IMAGE_ID' lumenpink/joaju-web:latest && cd ~/stacks/joaju && docker compose -f compose.yaml up -d --no-build joaju"
               echo "✔ Rollback concluído para imagem anterior $OLD_IMAGE_ID."
             fi
             exit 1
           fi
 
       - name: "Prune Orphan Docker Layers"
+        env:
+          SSH_HOST: ${{ vars.DEPLOY_HOST_OBIZERO || '172.17.0.1' }}
+          SSH_USER: ${{ vars.DEPLOY_USER_OBIZERO || 'lumen' }}
         run: |
-          docker image prune -f
+          ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_obitwo "$SSH_USER@$SSH_HOST" "docker image prune -f"

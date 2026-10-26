@@ -20,7 +20,7 @@ services:
 
   # 2. Kroki Gateway
   kroki:
-    image: yuzutech/kroki:0.32.1
+    image: gambi.2lp.in/lumen/mirror-kroki:0.32.1
     container_name: kroki_gateway
     restart: unless-stopped
     environment:
@@ -33,7 +33,7 @@ services:
 
   # 3. Mermaid renderer (Chromium headless)
   kroki-mermaid:
-    image: yuzutech/kroki-mermaid:0.32.1
+    image: gambi.2lp.in/lumen/mirror-kroki-mermaid:0.32.1
     container_name: kroki_mermaid
     restart: unless-stopped
     networks:
