@@ -23,7 +23,7 @@ if ! grep -q 'registry = "lumen"' Cargo.toml; then
 fi
 echo "✔ [PASS] Cargo.toml configurado para registry soberano lumen."
 
-# 3. Verificar hermeticidade do compose.yaml e espelhos soberanos Kroki
+# 3. Verificar hermeticidade do compose.yaml e arquitetura standalone sem Kroki
 if grep -q 'context: \.\.' compose.yaml; then
   echo "✘ [FALHA] compose.yaml ainda aponta o contexto de build para o diretório pai (..)"
   exit 1
@@ -36,15 +36,15 @@ if ! grep -q 'image: lumenpink/joaju-web:latest' compose.yaml; then
   echo "✘ [FALHA] compose.yaml não define a imagem canônica 'lumenpink/joaju-web:latest'!"
   exit 1
 fi
-if ! grep -q 'image: gambi.2lp.in/lumen/mirror-kroki:0.32.1' compose.yaml; then
-  echo "✘ [FALHA] compose.yaml não utiliza o espelho soberano mirror-kroki no gambi.2lp.in!"
+if grep -q -i 'kroki' compose.yaml; then
+  echo "✘ [FALHA] compose.yaml ainda contém referências legadas ao serviço Kroki!"
   exit 1
 fi
-if ! grep -q 'image: gambi.2lp.in/lumen/mirror-kroki-mermaid:0.32.1' compose.yaml; then
-  echo "✘ [FALHA] compose.yaml não utiliza o espelho soberano mirror-kroki-mermaid no gambi.2lp.in!"
+if grep -q 'depends_on' compose.yaml; then
+  echo "✘ [FALHA] compose.yaml ainda contém dependências de sidecars (depends_on)!"
   exit 1
 fi
-echo "✔ [PASS] compose.yaml com contexto hermético, imagem canônica e espelhos soberanos."
+echo "✔ [PASS] compose.yaml com contexto hermético, imagem canônica e arquitetura standalone."
 
 # 4. Verificar ausência de cópias locais fraturadas no Dockerfile
 if grep -q 'COPY joaju' Dockerfile; then
@@ -111,10 +111,10 @@ if grep -q "/home/lumen/src/joaju-web" "$TMP_MUTANT"; then
     echo "  [PASS] Mutante A (caminho host no workflow) detectado e isolado"
 fi
 
-# Mutante B: Omissão de espelho soberano kroki
-grep -v "mirror-kroki" compose.yaml > "$TMP_MUTANT"
-if ! grep -q "gambi.2lp.in/lumen/mirror-kroki:0.32.1" "$TMP_MUTANT"; then
-    echo "  [PASS] Mutante B (omissão de mirror-kroki) detectado e isolado"
+# Mutante B: Reintrodução indevida de Kroki no compose.yaml
+echo "  kroki:" > "$TMP_MUTANT"
+if grep -q -i "kroki" "$TMP_MUTANT"; then
+    echo "  [PASS] Mutante B (reintrodução indevida de kroki) detectado e isolado"
 fi
 
 # Mutante C: Omissão de comando SSH com chave id_obitwo
