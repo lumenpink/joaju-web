@@ -1,5 +1,5 @@
 services:
-  # 1. Joaju Web HTTP service (Pure Rust Axum daemon + static assets)
+  # Joaju Web HTTP service (Pure Rust Axum daemon + static assets)
   joaju:
     image: lumenpink/joaju-web:latest
     build:
@@ -13,29 +13,6 @@ services:
       - PORT=3000
     volumes:
       - ./data:/data
-    networks:
-      - joaju_net
-    depends_on:
-      - kroki
-
-  # 2. Kroki Gateway
-  kroki:
-    image: gambi.2lp.in/lumen/mirror-kroki:0.32.1
-    container_name: kroki_gateway
-    restart: unless-stopped
-    environment:
-      - KROKI_MERMAID_HOST=kroki-mermaid
-      - KROKI_MERMAID_PORT=8002
-    networks:
-      - joaju_net
-    depends_on:
-      - kroki-mermaid
-
-  # 3. Mermaid renderer (Chromium headless)
-  kroki-mermaid:
-    image: gambi.2lp.in/lumen/mirror-kroki-mermaid:0.32.1
-    container_name: kroki_mermaid
-    restart: unless-stopped
     networks:
       - joaju_net
 
