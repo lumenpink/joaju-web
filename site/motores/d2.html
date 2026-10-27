@@ -143,14 +143,14 @@ frontend: Camada de Apresentação {
 }
 
 backend: Servidor Local Joaju {
-  router: Express Gateway (:3000)
+  router: Daemon Axum (:3000)
   preprocessor: Pré-processador Dinâmico
-  r_engine: Rscript (Pedtools)
-  kroki: Kroki Multi-engine
+  pedigree_engine: joaju-pedigree (Rust)
+  graph_engine: joaju-graph / joaju-sequence (Rust)
 
   router -> preprocessor: Parse de Diretivas %%
-  preprocessor -> r_engine: Tabelas Clínicas
-  preprocessor -> kroki: Diagramas D2/Mermaid
+  preprocessor -> pedigree_engine: Heredogramas Clínicos
+  preprocessor -> graph_engine: Diagramas Nativos Typst/SVG
 }
 
 compilador: Núcleo Tipográfico {
