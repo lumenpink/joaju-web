@@ -31,12 +31,14 @@ jobs:
             echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           fi
 
-      - name: "Configure Sovereign Lumen Cargo Registry"
+      - name: "Configure Cargo Registries"
         run: |
           mkdir -p "$HOME/.cargo"
-          printf '[registries.lumen]\nindex = "sparse+https://gambi.2lp.in/api/packages/lumen/cargo/"\n' > "$HOME/.cargo/config.toml"
-          if [ -n "${{ secrets.LUMEN_REGISTRY_TOKEN }}" ]; then
-            printf '[registries.lumen]\ntoken = "${{ secrets.LUMEN_REGISTRY_TOKEN }}"\n' > "$HOME/.cargo/credentials.toml"
+          printf '[registries.gambi]\nindex = "sparse+https://gambi.2lp.in/api/packages/lumen/cargo/"\n' > "$HOME/.cargo/config.toml"
+          printf '[registries.lumen]\nindex = "sparse+https://gambi.2lp.in/api/packages/lumen/cargo/"\n' >> "$HOME/.cargo/config.toml"
+          TOKEN="${{ secrets.REGISTRY_TOKEN || secrets.GAMBI_2LP_IN_TOKEN || secrets.LUMEN_REGISTRY_TOKEN || secrets.FORGEJO_TOKEN }}"
+          if [ -n "$TOKEN" ]; then
+            printf '[registries.gambi]\ntoken = "Bearer %s"\n[registries.lumen]\ntoken = "Bearer %s"\n' "$TOKEN" "$TOKEN" > "$HOME/.cargo/credentials.toml"
           fi
 
       - name: "GitOps — Update Sovereign Joaju Dependency"
