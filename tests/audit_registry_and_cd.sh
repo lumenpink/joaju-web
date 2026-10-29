@@ -98,6 +98,11 @@ if ! grep -q "docker image prune -f" "$WORKFLOW_FILE"; then
   exit 1
 fi
 
+if ! grep -q 'token = "Bearer %s"' "$WORKFLOW_FILE"; then
+  echo "✘ [FALHA] $WORKFLOW_FILE não utiliza autenticação Bearer para o cargo!"
+  exit 1
+fi
+
 echo "✔ [PASS] Pipeline de Continuous Deployment soberano em $WORKFLOW_FILE 100% em conformidade."
 
 # 6. Testes de Mutação (GOST Phase 7)
