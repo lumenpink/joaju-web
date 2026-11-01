@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # tests/audit_registry_and_cd.sh
-# Auditoria de conformidade GOST para uso do registry lumen e deploy soberano (Ticket #5)
+# Auditoria de conformidade GOST para uso do registry lumen e deploy canonico (Ticket #5)
 # ==============================================================================
 set -euo pipefail
 
@@ -16,12 +16,12 @@ if grep -q 'path = "\.\./joaju"' Cargo.toml; then
   exit 1
 fi
 
-# 2. Verificar uso explícito do registry soberano lumen
+# 2. Verificar uso explícito do registry lumen
 if ! grep -q 'registry = "lumen"' Cargo.toml; then
   echo "✘ [FALHA] Cargo.toml não configura 'registry = \"lumen\"' para joaju!"
   exit 1
 fi
-echo "✔ [PASS] Cargo.toml configurado para registry soberano lumen."
+echo "✔ [PASS] Cargo.toml configurado para registry lumen."
 
 # 3. Verificar hermeticidade do compose.yaml e arquitetura standalone sem Kroki
 if grep -q 'context: \.\.' compose.yaml; then
@@ -52,12 +52,12 @@ if grep -q 'COPY joaju' Dockerfile; then
   exit 1
 fi
 if ! grep -q -E "sparse\+https://(gambi|git)\.2lp\.in/api/packages/lumen/cargo/" Dockerfile; then
-  echo "✘ [FALHA] Dockerfile não configura o endpoint do registry soberano lumen!"
+  echo "✘ [FALHA] Dockerfile não configura o endpoint do registry lumen!"
   exit 1
 fi
 echo "✔ [PASS] Dockerfile hermético com sparse index configurado."
 
-# 5. Verificar workflow de Continuous Deployment soberano
+# 5. Verificar workflow de Continuous Deployment centralizado
 WORKFLOW_FILE=""
 if [ -f .forgejo/workflows/ci.yml ]; then
   WORKFLOW_FILE=".forgejo/workflows/ci.yml"
@@ -103,7 +103,7 @@ if ! grep -q 'token = "Bearer %s"' "$WORKFLOW_FILE"; then
   exit 1
 fi
 
-echo "✔ [PASS] Pipeline de Continuous Deployment soberano em $WORKFLOW_FILE 100% em conformidade."
+echo "✔ [PASS] Pipeline de Continuous Deployment em $WORKFLOW_FILE 100% em conformidade."
 
 # 6. Testes de Mutação (GOST Phase 7)
 echo "=== [MUTATION] Testes de Mutantes Críticos ==="

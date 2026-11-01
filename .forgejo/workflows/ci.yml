@@ -1,4 +1,4 @@
-name: CI, Build & Sovereign CD
+name: CI, Build & Centralized CD
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
             printf '[registries.gambi]\ntoken = "Bearer %s"\n[registries.lumen]\ntoken = "Bearer %s"\n' "$TOKEN" "$TOKEN" > "$HOME/.cargo/credentials.toml"
           fi
 
-      - name: "GitOps — Update Sovereign Joaju Dependency"
+      - name: "GitOps — Update Joaju Dependency"
         if: github.event_name == 'workflow_dispatch'
         run: |
           echo "-> GitOps dispatch recebido: atualizando joaju a partir do registry lumen..."
@@ -67,7 +67,7 @@ jobs:
       - name: "Run Unit & Integration Tests"
         run: cargo test
 
-      - name: "Audit Sovereign CD Workflow & Registry"
+      - name: "Audit CD Workflow & Registry"
         run: bash tests/audit_registry_and_cd.sh
 
       - name: "Audit GitOps Cascade Integration"
@@ -80,7 +80,7 @@ jobs:
           fi
 
   build-and-deploy-docker:
-    name: "Container — Build & Sovereign CD (obizero)"
+    name: "Container — Build & Centralized CD (obizero)"
     runs-on: ubuntu-latest
     container:
       image: gambi.2lp.in/lumen/gost-ci-cross:latest
@@ -112,7 +112,7 @@ jobs:
         run: |
           docker push lumenpink/joaju-web:latest
 
-      - name: "Deploy to Sovereign Node (obizero)"
+      - name: "Deploy to obizero Node"
         env:
           SSH_HOST: ${{ vars.DEPLOY_HOST_OBIZERO || '172.17.0.1' }}
           SSH_USER: ${{ vars.DEPLOY_USER_OBIZERO || 'lumen' }}
