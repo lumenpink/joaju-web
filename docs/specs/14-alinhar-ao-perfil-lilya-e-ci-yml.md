@@ -14,9 +14,12 @@ Padronização da esteira CI e das especificações GOST para conformidade com a
 - [x] Fase 1 (Ticket): #14 criado
 - [x] Fase 2 (Branch): `chore/14-alinhar-ao-perfil-lilya-e-ci-yml` ativada
 - [x] Fase 3 (Spec): Especificação técnica elaborada
-- [ ] Fase 4 (Red Test): Teste falhando após migração para `ci.yml`
-- [ ] Fase 5 (Green Implement): Renomear workflow e ajustar testes
-- [ ] Fase 6 (Refactor): Limpeza e garantia de clareza
-- [ ] Fase 7 (Mutation/Adversarial): Validação de caminhos e nomes
-- [ ] Fase 8 (Quality Gate): Testes e clippy estritos
-- [ ] Fase 9 (Finish): Encerramento com `cccp close` e integração
+- [x] Fase 4 (Red Test): Teste falhando após migração para `ci.yml`
+- [x] Fase 5 (Green Implement): Renomear workflow e ajustar testes
+- [x] Fase 6 (Refactor): Limpeza e garantia de clareza
+- [x] Fase 7 (Mutation/Adversarial): Validação de caminhos e nomes
+- [x] Fase 8 (Quality Gate): Testes e clippy estritos
+- [x] Fase 9 (Finish): Encerramento com `cccp close` e integração
+
+## 4. Conclusão
+Workflow renomeado para `.forgejo/workflows/ci.yml`, testes de auditoria shell e especificações ajustados e passando, perfil atualizado para Lilya (`https://lilya.2lp.in/profile.md`), com 100% de conformidade nos quality gates e testes.
