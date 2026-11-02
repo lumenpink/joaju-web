@@ -30,4 +30,9 @@ if ! grep -q "cargo update -p joaju" "$WORKFLOW"; then
   exit 1
 fi
 
+if grep -q "codeberg.org" "$WORKFLOW"; then
+  echo "✘ [FALHA] $WORKFLOW ainda contem referencias legadas de push ao Codeberg!"
+  exit 1
+fi
+
 echo "✔ [PASS] Auditoria GitOps dispatch validada com sucesso em $WORKFLOW."
