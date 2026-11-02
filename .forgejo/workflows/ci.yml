@@ -51,9 +51,7 @@ jobs:
             git config user.name "Lumen Pink (Baquara)"
             git config user.email "hi@lumen.pink"
             git commit -m "chore(deps): atualizar joaju para versao mais recente [skip ci]"
-            if [ -n "${{ secrets.CODEBERG_TOKEN }}" ]; then
-              git push "https://x-access-token:${{ secrets.CODEBERG_TOKEN }}@codeberg.org/lumenpink/joaju-web.git" main || true
-            fi
+            git push origin main || true
           else
             echo "-> Nenhuma alteracao em Cargo.lock detectada."
           fi

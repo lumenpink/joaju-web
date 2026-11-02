@@ -1856,7 +1856,7 @@ dependencies = [
 
 [[package]]
 name = "joaju-web"
-version = "0.1.0"
+version = "0.1.0-dev.58+20261102.7522983"
 dependencies = [
  "axum",
  "http-body-util",
