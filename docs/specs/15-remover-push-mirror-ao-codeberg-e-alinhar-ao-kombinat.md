@@ -13,3 +13,8 @@ O ecossistema Joaju migrou a orquestração de dependências em cascata para o d
 - Fase 4: Atualizar `tests/audit_gitops_dispatch.sh` com asserção falha contra menção a `codeberg.org` no workflow.
 - Fase 5: Remover o push ao Codeberg em `.forgejo/workflows/ci.yml`, tornando o teste verde.
 - Fase 8: Validação de conformidade Gosplan com `cccp check --strict`.
+
+## 4. Status de Conclusão
+- [x] Push legado ao Codeberg expurgado de `.forgejo/workflows/ci.yml`.
+- [x] Teste de auditoria GitOps atualizado e aprovado.
+- [x] 100% de conformidade Gosplan aprovado.

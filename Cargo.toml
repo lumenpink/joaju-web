@@ -1,6 +1,6 @@
 [package]
 name = "joaju-web"
-version = "0.1.0-dev.59+20261102.fdb85c1"
+version = "0.1.0-dev.60+20261102.0869458"
 edition = "2021"
 description = "HTTP microservice, Axum daemon, and web playground for the Joaju academic compiler"
 license = "Apache-2.0"
